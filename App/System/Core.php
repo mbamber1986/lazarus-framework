@@ -1,62 +1,36 @@
 <?php
 namespace App\System;
-
+use LazarusPhp\LazarusDb\Database;
 
 class Core
 {
     private static $instance;
-    private static $path = [];
- 
+    private static $paths = [];
+
     private function __construct()
     {
-        static::Map("Root");
-        static::Map("Database","/App/System/Configs/config.ini");
-
-    }
-
-    /**
-     * Map()
-     * 
-     * this Method will Create and Assign values to a define Script
-     * 
-     * @param [string] $name
-     * @param [string] $path
-     * @param [booleon] $removeroot
-     * @return void
-     */
-    Public static function Map($name,$path=null,$removeRoot=null)
-    {   
-        $root = self::GenerateRoot();
-        if(is_null($path))
-        {
-            $path = $root;
+        self::Defines();
+        // Load All Created Define paths
+        foreach (self::$paths as $name => $path) {
+            define($name,self::GenerateRoot().$path);
         }
-        elseif(!isset(self::$path[$name])){
-            if(!is_null($removeRoot) && ($removeRoot == true))
-            {
-                
-                $path = self::$path["$name"] = $path;
-            }
-            else
-            {
-                $root = self::GenerateRoot();
-                $path = self::$path[$name] = $root.$path;
-            }
-          }
-        define($name,$path);
-      
+
+       Database::Connect(CONFIG);
+        
     }
- 
-    /**
-     * Attach
-     * Used to Pull the Created Aliase created by map
-     * @param [string] $name
-     * @return self::$path[$name];
-     */
-    public static function Attach($name)
+
+
+    // Load Defines
+
+    Public static function Defines()
     {
-        return self::$path[$name];
+        self::$paths = [
+            "ROOT"=>"",
+            "CONFIG"=>"/config.php",
+            "ROUTER"=>"/App/System/Router/web.php"
+        ];
     }
+
 
     public static function GenerateRoot()
     {
@@ -78,6 +52,7 @@ class Core
     {
         static::$instance=NULL;
     }
+    
     /**
      * Undocumented function
      *
@@ -93,6 +68,7 @@ class Core
 
      public static function Boot()
     {
+   
         if(!isset(static::$instance))
         {
             // Call the currently Called class;
@@ -107,6 +83,7 @@ class Core
     // Get the Class Version Number When Passed Over.
     final public static function GetVersion($version=null)
     {
+
         return is_null($version) ? static::$version : $version;
     }
 

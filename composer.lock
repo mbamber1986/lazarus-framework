@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "de10e9769bc4f988e580f6a0938f20e5",
+    "content-hash": "baf8a4d565cd27953726f2e05beffb1c",
     "packages": [
         {
             "name": "graham-campbell/result-type",
@@ -164,6 +164,42 @@
                 }
             ],
             "time": "2023-10-29T16:17:44+00:00"
+        },
+        {
+            "name": "lazarusphp/lazarusdb",
+            "version": "v0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mbamber1986/lazarus-db.git",
+                "reference": "b5d158a0444f1b581f8abd1d6c32147cc7259f16"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mbamber1986/lazarus-db/zipball/b5d158a0444f1b581f8abd1d6c32147cc7259f16",
+                "reference": "b5d158a0444f1b581f8abd1d6c32147cc7259f16",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "LazarusPhp\\LazarusDb\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Martin Bamber"
+                }
+            ],
+            "description": "Database connection mnager for LazarusPhp framework",
+            "support": {
+                "issues": "https://github.com/mbamber1986/lazarus-db/issues",
+                "source": "https://github.com/mbamber1986/lazarus-db/tree/v0.1"
+            },
+            "time": "2024-04-29T20:08:14+00:00"
         },
         {
             "name": "miladrahimi/phpcontainer",
