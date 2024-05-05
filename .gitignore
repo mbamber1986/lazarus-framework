@@ -1,3 +1,5 @@
-Lazarus
 vendor
-App/System/Configs
+dev
+config.php
+.vscode
+.idea
