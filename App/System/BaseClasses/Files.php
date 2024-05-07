@@ -5,7 +5,7 @@ namespace App\System\BaseClasses;
 use App\System\Core;
 use PDOException;
 
-class Files extends Core
+class Files 
 {
     // Global variables
     protected static  $version = "1.0";

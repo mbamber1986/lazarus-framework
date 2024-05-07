@@ -79,19 +79,6 @@ class Core
         return static::$instance;
     }
 
-
-    // Get the Class Version Number When Passed Over.
-    final public static function GetVersion($version=null)
-    {
-
-        return is_null($version) ? static::$version : $version;
-    }
-
-    final public static function Filename($filename=null)
-    {
-        return is_null($filename) ? static::$filename : $filename;
-    }
-
     // Prevent the CLass from being cloned
      private function __clone()
     {
