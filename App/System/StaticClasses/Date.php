@@ -18,18 +18,19 @@ class Date
      * @property mixed $instance static
      */
 
-
-    // Generate the properties
-    public $date;
-    public static $utz;
-//  Set Default timezone;
+    //  Create the instance
     private static $instance;
-    // Default Timezone
-    private static $timezone = "London";
+    // Generate the properties
+    private static $date = [];
+    private static $timezone = [];
+
+//  Set Default timezone;
+ 
 
     // Create private Constructor
     private function __construct()
     {
+
     }
 
  
@@ -39,10 +40,8 @@ class Date
 
         foreach(self::ListTz() as $key => $value)
         {
-            self::GenerateTimeZone($key,$value);
+            self::PushTimeZone($key,$value);
         }
-
-        
 
         if(!isset(static::$instance))
         {
@@ -54,38 +53,40 @@ class Date
 
     // Create Custom functions for Date and timeZone;
 
-    public static function AddDate($date=null,$timeZone=null)
+    public static function AddDate($date,$timeZone=null)
     {
-        if(!empty($date))
-      {  
-        !is_null($timeZone) ? $timeZone = $timeZone : $timeZone = self::$timezone;
+        // Create a Default TimeZone if one is not assigned
+        is_null($timeZone) ? $timeZone = self::PullTimeZone("London")  : $timeZone = $timeZone;
+
+        // Return The DateTime Method
         return new DateTime($date,self::SetTimeZone($timeZone));
-    }
-    else
-        {
-            echo "Error Date Format Must Not be Empty Please";
-        }
+
     }
 
     
-    public static function GenerateTimeZone($name,$value)
+    // Push New TimeZone by name
+    public static function PushTimeZone($name,$value)
     {
-      return  self::$utz[$name] = $value;
-    }
-
-    public static function GetTimezone($name)
-    {
-        return self::$utz[$name];
-    }
-
-    public static function SetTimeZone($timeZone)
-    {
-        return new DateTimeZone(self::GetTimezone($timeZone));
-    }
-
+      return  self::$timezone[$name] = $value;
     
+    }
+
+    // Pull the TimeZone Value By Name
+    public static  function PullTimezone($name)
+    {
+        return self::$timezone[$name];
+    }
+
+    // Set New TimeZone FUnction
+    public static function SetTimeZone($timezone)
+    {
+        return new DateTimeZone($timezone);
+    }
+
+// Array Of PreCreated Timezones 
     public static function ListTz()
     {
+        
             $tz = [
                 "London"=>"Europe/London",
                 "Sydney"=>"Australia/Sydney"
@@ -99,16 +100,17 @@ class Date
     {       
         $s = $start;
         $t = $target;
-        return $s->diff($t)->format($format);
+        return $s->diff($t);
 
     }
 
-
+// Return Date time Interval
     public static function ReturnInterval($format)
     {
         return new DateInterval($format);
     }
 
+    // Create New Interval !Needs works still
     public function AddInterval($date,$value,$command=null)
     {
 
@@ -117,24 +119,14 @@ class Date
         
     }
     
+    // Reverse of the Above Subtract intervals !Needs works
     public static function SubInterval($date,$value,$command=null)
     {
 
         is_null($command) ? $c="" : $c="T";
          return $date->sub(self::ReturnInterval("P".$c.$value));
-        
     }
+// 
 
-    public function WithFormat($format)
-    {
-        return format($format);
-    }
-
-
-    public static function InFormat($date,$format)
-    {
-         return $date->format($format);
-         
-    }
 
 }
