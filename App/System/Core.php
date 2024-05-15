@@ -1,6 +1,7 @@
 <?php
 namespace App\System;
 use LazarusPhp\LazarusDb\Database;
+use App\System\StaticClasses\Date;
 
 class Core
 {
@@ -10,6 +11,7 @@ class Core
     private function __construct()
     {
         self::Defines();
+        Date::Boot();
         // Load All Created Define paths
         foreach (self::$paths as $name => $path) {
             define($name,self::GenerateRoot().$path);
