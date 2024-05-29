@@ -10,8 +10,8 @@ use Exception;
 
 class Date
 {
-    public static $version = "1.0";
-    public static $filename = __FILE__;
+    public $version = "1.0";
+    public $filename = __FILE__;
 
     /**
      * 
@@ -20,27 +20,25 @@ class Date
      * @property mixed $instance static
      */
 
-    //  Create the instance
-    private static $instance;
     // Generate the properties
-    private static $date;
-    private static $settimezone;
-    private static $dtz;
+    private $date;
+    private $settimezone;
+    private $dtz;
 
 
 //  Set Default timezone;
  
 
     // Create private Constructor
-    private function __construct()
+    public function __construct()
     {
-        self::$dtz = "Europe/London";
+        $this->dtz = "Europe/London";
     }
 
     // Add Setter for Date time;
     // Use to change the timezone Mid Code
 
-    private static function LoadTimeZone($timezone)
+    private function LoadTimeZone($timezone)
     {
         try{
         return new DateTimeZone($timezone);
@@ -51,30 +49,20 @@ class Date
     }
     }
 
-    public static function Boot()
-    {
-
-        if(!isset(static::$instance))
-        {
-            $c = get_called_class();
-            static::$instance = new $c;
-        }
-        return static::$instance;
-    }
 
     // Create Custom functions for Date and timeZone;
 
-    public static function AddDate($date,$tz=null)
+    public function AddDate($date,$tz=null)
     {
-        is_null($tz) ? $timezone = self::$dtz : $timezone = $tz;
+        is_null($tz) ? $timezone = $this->dtz : $timezone = $tz;
         // Return The DateTime Method
-        return new DateTime($date,self::LoadTimeZone($timezone));                                                                                          
+        return new DateTime($date,$this->LoadTimeZone($timezone));                                                                                          
     }
 
 // Command Based Functions;
 
     // get Difference between two times.
-    public static function GetDifference( $start,  $target,  $format)
+    public function GetDifference( $start,  $target,  $format)
     {       
         $s = $start;
         $t = $target;
@@ -83,26 +71,26 @@ class Date
     }
 
 // Return Date time Interval
-    public static function ReturnInterval($format)
+    public function ReturnInterval($format)
     {
         return new DateInterval($format);
     }
 
     // Create New Interval !Needs works still
-    public static function AddInterval($date,$value,$command=null)
+    public function AddInterval($date,$value,$command=null)
     {
 
         is_null($command) ? $c="" : $c="T";
-         return $date->add(self::ReturnInterval("P".$c.$value));
+         return $date->add($this->ReturnInterval("P".$c.$value));
         
     }
     
     // Reverse of the Above Subtract intervals !Needs works
-    public static function SubInterval($date,$value,$command=null)
+    public function SubInterval($date,$value,$command=null)
     {
 
         is_null($command) ? $c="" : $c="T";
-         return $date->sub(self::ReturnInterval("P".$c.$value));
+         return $date->sub($this->ReturnInterval("P".$c.$value));
     }
 // 
 

@@ -1,37 +1,26 @@
 <?php
 namespace App\System;
-use LazarusPhp\LazarusDb\Database;
-use App\System\StaticClasses\Date;
+use LazarusPhp\DatabaseManager\Database;
+use App\System\Classes\Required\Date;
+use LazarusPhp\SessionManager\Sessions;
 
 class Core
 {
     private static $instance;
-    private static $paths = [];
-
     private function __construct()
     {
-        self::Defines();
-        Date::Boot();
+        $date = new Date();
+        // $expiry = $date->AddDate("now")->format("Y-m-d H:i:s");
+        $session= new Sessions();
+        // $session->CleanSessions($expiry);
+        $session->Start();
+        $session->WatchSession();
         // Load All Created Define paths
-        foreach (self::$paths as $name => $path) {
-            define($name,self::GenerateRoot().$path);
-        }
-
-       Database::Connect(CONFIG);
         
     }
 
 
     // Load Defines
-
-    Public static function Defines()
-    {
-        self::$paths = [
-            "ROOT"=>"",
-            "CONFIG"=>"/config.php",
-            "ROUTER"=>"/App/System/Router/web.php"
-        ];
-    }
 
 
     public static function GenerateRoot()
@@ -54,19 +43,7 @@ class Core
     {
         static::$instance=NULL;
     }
-    
-    /**
-     * Undocumented function
-     *
-     * Reference of a gets the name of the called class
-     * @var $class 
-     * @property Private static::$instance this is then Coupled with $class 
-     * making a new insta ntiated class of itself 
-     * 
-     * Return self
-     * @return @property Static::$instance;
-     * 
-     */
+
 
      public static function Boot()
     {
@@ -88,9 +65,8 @@ class Core
     }
 
     // Dont Allow this class to be converted to string
-    public function __toString()
-    {
-        echo "Not Allowed";
-    }
+    // public function __toString()
+    // {
+    //     // echo "Not Allowed";
+    // }
 }
-?>

@@ -10,7 +10,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "LazarusPhp\\AuthManager\\": "Dev/LazarusPhp/AuthManager/src/"
+            "LazarusPhp\\SessionManager\\": "Dev/LazarusPhp/SessionManager/src/",
+            "LazarusPhp\\DatabaseManager\\": "Dev/LazarusPhp/DatabaseManager/src/"
         }
     },
     "prefer-stable": true,
@@ -28,8 +29,7 @@
         "vlucas/phpdotenv": "^5.2",
         "laminas/laminas-diactoros": "^2.5",
         "phpmailer/phpmailer": "^6.2",
-        "miladrahimi/phprouter": "^5.1",
-        "lazarusphp/lazarusdb": "^0.1.0"
+        "miladrahimi/phprouter": "^5.1"
     }
 
 }

@@ -1,8 +1,6 @@
 vendor
-<<<<<<< HEAD
-dev
-=======
->>>>>>> dev
+Dev
 config.php
 .vscode
+public/test.php
 .idea
