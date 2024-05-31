@@ -1,12 +1,15 @@
 <?php
 namespace App\System\Classes\Required;
+use LazarusPhp\DatabaseManager\Database;
 class Csrf
 {
 
     private static $instance;
     private static $token;
+    public static $db;
     public static function Boot()
     {
+        self::$db = new Database();
         self::GenerateCsrf();
         if(!isset($instance))
         {
