@@ -1,7 +1,7 @@
 <?php
 namespace App\System;
-use LazarusPhp\DatabaseManager\Database;
-use App\System\Classes\Required\Date;
+
+use App\System\Classes\Required\Csrf;
 use LazarusPhp\SessionManager\Sessions;
 
 class Core
@@ -9,13 +9,9 @@ class Core
     private static $instance;
     private function __construct()
     {
-        $date = new Date();
-        // $expiry = $date->AddDate("now")->format("Y-m-d H:i:s");
         $session= new Sessions();
-        // $session->CleanSessions($expiry);
         $session->Start();
-        $session->WatchSession();
-        // Load All Created Define paths
+        Csrf::Boot();
         
     }
 

@@ -3,13 +3,14 @@ require(__DIR__ . "/../vendor/autoload.php");
 
 use App\System\Classes\Required\Date;
 use App\System\Core;
+use App\System\Classes\Required\VersionControl;
 use LazarusPhp\DatabaseManager\Database;
 use LazarusPhp\SessionManager\Sessions;
+use App\System\Classes\Required\Csrf;
 
 Core::Boot();
-$db = new Database();
-$user = $db->AddParams("id",1)->One("select * from users where id=:id");
-echo $user->username;
+Csrf::GetInput();
 
-$date = new Date();
-$expiry = $date->AddDate("now")->Format("Y-m-d");
+var_dump($_SESSION);
+
+
