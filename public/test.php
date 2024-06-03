@@ -9,8 +9,3 @@ use LazarusPhp\SessionManager\Sessions;
 use App\System\Classes\Required\Csrf;
 
 Core::Boot();
-Csrf::GetInput();
-
-var_dump($_SESSION);
-
-
