@@ -11,7 +11,6 @@ class Core
     {
         $session= new Sessions();
         $session->Start();
-        Csrf::Boot();
         
     }
 

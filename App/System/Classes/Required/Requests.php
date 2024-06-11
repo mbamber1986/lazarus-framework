@@ -10,9 +10,15 @@ class Requests
 {
 
     public $validate;
+    public $formerror = [];
+    private $post;
+    private $get;
+
+    private $required = false;
+
     public function  __construct()
     {
-        
+        $this->required = false;
     }
 
     public function Sanitize($name)
@@ -30,16 +36,48 @@ class Requests
         $data = htmlentities($data,ENT_QUOTES);
         return $data;
     }
-    
-    // Do a foeach Loop on all requests
 
 
-   
-    
+    public function displayPost($name)
+    {
+        echo (isset($_POST[$name])) ? $this->SafeHtml($_POST[$name]) : "" ;
+    }
+
+
+
+
     public function Post($name)
-    {   
-        $post = $_POST[$name];
-        return ($this->validate == true) ? isset($post) : $post;
+    {  
+        $this->post = $_POST[$name];
+        if($this->required == true)
+        {
+            $this->CheckEmpty($this->post,$name);
+        }
+        else
+        {
+            return ($this->validate == true) ? isset($this->post) : $this->post;
+        }
+    }
+
+
+    public function countErrors()
+    {
+        // This works 
+        return count($this->formerror);
+    }
+
+    public function ListErrors($class = null)
+    {
+
+        if ($this->countErrors() > 0){
+            foreach ($this->formerror as $error) {
+                echo "<div class='errors'>" . $error . "</div>";
+            }
+        }
+        else
+        {
+            echo "No Errors Found";
+        }
     }
 
     
@@ -66,25 +104,46 @@ class Requests
     {
 
         $request = $_SERVER['REQUEST_METHOD'];
-
-        if($request == "GET")
+        switch($request)
         {
-          return $this->Get($name);
-        }
-        elseif($request == "POST")
-        {
-            return $this->Post($name);
+            case 'GET': $request = $this->Get($name);
+            break;
+            case 'POST': $request = $this->Post($name);
+            break;
+            default;
+            return $request;
         }
 
     }
 
-    public function request($name,$validate=false)
+    public function CheckEmpty($post,$name)
+    {
+        if(empty($post))
+        {
+            $this->formerror[] = "An Error Occurred : Empty Value for input $name";
+        }
+    }
+
+    public function Required()
+    {
+        $this->required =  true;
+        return $this;
+    }
+
+// Call this method at the end to allow the statement to continue.
+    public function OnComplete( int $count=0) : int
+    {
+        return ($this->countErrors() == $count) ? true : false;
+    }
+
+
+    public function request($name)
     {   
         try
-        {
-           ( $validate == true && is_bool($validate)) ? $this->validate = true : $this->validate = false;
- 
+        { 
+            // $required == true ? $this->required = true : $this->required = false;
              $request =  $this->GetRequestMethod($name);
+             $this->required = false;
              return $this->Sanitize($request);
         }
         catch(Exception $e)
