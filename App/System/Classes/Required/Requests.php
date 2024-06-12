@@ -39,18 +39,22 @@ class Requests
     }
 
 
-    public function displayPost($name)
-    {
-        echo (isset($_POST[$name])) ? $this->SafeHtml($_POST[$name]) : "" ;
-    }
 
 
 
 
     public function Post($name)
     {
-        $this->post = $_POST[$name];
-        return ($this->set == true) ? isset($this->post) : $this->post;
+        if(isset($_POST[$name]))
+        {
+            $this->post = $_POST[$name];
+        }
+        else
+        {
+            $this->post = null;
+        }
+         ($this->required == true) ? $this->CheckEmpty($this->post,$name) : false;
+         return ($this->set == true) ? isset($this->post) : $this->post;
     }
 
 
@@ -74,28 +78,27 @@ class Requests
         }
     }
 
-    
 
     public function Get($name)
-    {   
-        $get = $_GET[$name];
-        return ($this->validate == true) ? isset($get) : $get;
-    }
+    { 
+        if(isset($_GET[$name]))
+        {
+            $this->get = $_GET[$name];
+        }
+        else
+        {
+            $this->get = null;
+        }
 
-    public function OnSubmit($name)
-    {
-        return isset($_POST[$name]) ? $this->validate = true:  $this->validate = false;
+        return ($this->set == true) ? isset($this->get) : $this->get;
+        
+   
+    
     }
-
-    public function OnGet($name)
+    
+    public function CheckEmpty($value,$name)
     {
-        $get = $_GET[$name];
-        return isset( $get) ? $this->validate = true : $this->validate = false;
-    }
-
-    public function CheckEmpty($post,$name)
-    {
-        if(empty($post))
+        if(empty($value))
         {
             $this->formerror[] = "An Error Occurred : Empty Value for input $name";
         }
@@ -103,8 +106,7 @@ class Requests
 
     public function Required()
     {
-        $this->required =  true;
-
+        $this->required = true;
         return $this;
     }
 
@@ -120,17 +122,18 @@ class Requests
         // Get the Request Method
 
         $request = $_SERVER['REQUEST_METHOD'];
-        $this->set = $set;
+            $this->set = $set;
+
         if($request === "POST")
         {
-         $request = $this->Post($name);
-
+                $request = $this->Post($name);
         }
         elseif($request === "GET")
         {
-            echo "get Request coming soon";
+                return $this->Get($name);
         }
 // Return Value
+        $this->required = false;
         return  $this->Sanitize($request);
     }
 
