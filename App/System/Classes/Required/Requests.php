@@ -13,6 +13,7 @@ class Requests
     public $formerror = [];
     private $post;
     private $get;
+    private $set;
 
     private $required = false;
 
@@ -47,16 +48,9 @@ class Requests
 
 
     public function Post($name)
-    {  
+    {
         $this->post = $_POST[$name];
-        if($this->required == true)
-        {
-            $this->CheckEmpty($this->post,$name);
-        }
-        else
-        {
-            return ($this->validate == true) ? isset($this->post) : $this->post;
-        }
+        return ($this->set == true) ? isset($this->post) : $this->post;
     }
 
 
@@ -99,23 +93,6 @@ class Requests
         return isset( $get) ? $this->validate = true : $this->validate = false;
     }
 
-
-    public function GetRequestMethod($name)
-    {
-
-        $request = $_SERVER['REQUEST_METHOD'];
-        switch($request)
-        {
-            case 'GET': $request = $this->Get($name);
-            break;
-            case 'POST': $request = $this->Post($name);
-            break;
-            default;
-            return $request;
-        }
-
-    }
-
     public function CheckEmpty($post,$name)
     {
         if(empty($post))
@@ -127,6 +104,7 @@ class Requests
     public function Required()
     {
         $this->required =  true;
+
         return $this;
     }
 
@@ -137,21 +115,23 @@ class Requests
     }
 
 
-    public function request($name)
-    {   
-        try
-        { 
-            // $required == true ? $this->required = true : $this->required = false;
-             $request =  $this->GetRequestMethod($name);
-             $this->required = false;
-             return $this->Sanitize($request);
-        }
-        catch(Exception $e)
+    public function request($name,$set=false)
+    { 
+        // Get the Request Method
+
+        $request = $_SERVER['REQUEST_METHOD'];
+        $this->set = $set;
+        if($request === "POST")
         {
-            throw new Exception($e->getMessage());
+         $request = $this->Post($name);
+
         }
-        // ($validate === true) ? $this->validate = true : $this->validate = false;
-    
+        elseif($request === "GET")
+        {
+            echo "get Request coming soon";
+        }
+// Return Value
+        return  $this->Sanitize($request);
     }
 
 
