@@ -103,7 +103,7 @@ class Requests
         }
 // Return Value
         $this->required = false;
-        return  $this->Sanitize($request);
+        return $request;
     }
 
 
