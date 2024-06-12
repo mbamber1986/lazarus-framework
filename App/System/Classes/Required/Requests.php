@@ -15,6 +15,7 @@ class Requests
     private $get;
     private $set;
 
+
     private $required = false;
 
     public function  __construct()
@@ -22,37 +23,16 @@ class Requests
         $this->required = false;
     }
 
-    public function Sanitize($name)
+    public function SafeHtml($name)
     {
         $data = trim($name);
-        $data = stripcslashes($data);
+        $data = stripslashes($data);
         $data = htmlspecialchars($data,ENT_QUOTES,'UTF-8');
-        return $data;
     }
-
-    public function SafeHtml($data)
-    {
-        $data = trim($data);
-        $data = stripcslashes($data);
-        $data = htmlentities($data,ENT_QUOTES);
-        return $data;
-    }
-
-
-
-
-
 
     public function Post($name)
     {
-        if(isset($_POST[$name]))
-        {
-            $this->post = $_POST[$name];
-        }
-        else
-        {
-            $this->post = null;
-        }
+        (isset($_POST[$name])) ? $this->post = $_POST[$name] :  $this->post = null;
          ($this->required == true) ? $this->CheckEmpty($this->post,$name) : false;
          return ($this->set == true) ? isset($this->post) : $this->post;
     }
@@ -81,19 +61,8 @@ class Requests
 
     public function Get($name)
     { 
-        if(isset($_GET[$name]))
-        {
-            $this->get = $_GET[$name];
-        }
-        else
-        {
-            $this->get = null;
-        }
-
+        (isset($_GET[$name])) ? $this->get = $_GET[$name] :  $this->get = null;
         return ($this->set == true) ? isset($this->get) : $this->get;
-        
-   
-    
     }
     
     public function CheckEmpty($value,$name)
