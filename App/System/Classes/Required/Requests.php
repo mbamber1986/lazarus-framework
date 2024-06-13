@@ -16,8 +16,6 @@ class Requests
     private $set;
 
 
-    private $required = false;
-
     public function  __construct()
     {
         $this->required = false;
@@ -25,9 +23,13 @@ class Requests
 
     public function SafeHtml($name)
     {
-        $data = trim($name);
+     
+         $data = trim($name);
         $data = stripslashes($data);
         $data = htmlspecialchars($data,ENT_QUOTES,'UTF-8');
+        return $data;
+  
+      
     }
 
     public function Post($name)
@@ -46,16 +48,9 @@ class Requests
 
     public function ListErrors($class = null)
     {
-
-        if ($this->countErrors() > 0){
             foreach ($this->formerror as $error) {
                 echo "<div class='errors'>" . $error . "</div>";
             }
-        }
-        else
-        {
-            echo "No Errors Found";
-        }
     }
 
 
@@ -67,7 +62,7 @@ class Requests
     
     public function CheckEmpty($value,$name)
     {
-        if(empty($value))
+        if(empty($value) || ($value="") || is_null($value) ) 
         {
             $this->formerror[] = "An Error Occurred : Empty Value for input $name";
         }
@@ -102,7 +97,7 @@ class Requests
                 return $this->Get($name);
         }
 // Return Value
-        $this->required = false;
+        // $this->required = false;
         return $request;
     }
 
