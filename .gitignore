@@ -3,4 +3,5 @@ Dev
 config.php
 .vscode
 public/test.php
+public/testsub.php
 .idea
