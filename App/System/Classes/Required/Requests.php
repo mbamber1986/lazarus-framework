@@ -51,6 +51,7 @@ class Requests
             foreach ($this->formerror as $error) {
                 echo "<div class='errors'>" . $error . "</div>";
             }
+
     }
 
 
