@@ -1,8 +1,7 @@
 <?php
 namespace App\System;
 
-use App\System\Classes\Required\Csrf;
-use App\System\Classes\Required\Security;
+use App\System\Classes\Required\Validation;
 use LazarusPhp\SessionManager\Sessions;
 
 class Core
@@ -13,7 +12,7 @@ class Core
         $session= new Sessions();
         $session->Start();
         // Add Security Class here to Autoload
-        Security::Boot();
+        Validation::Boot();
         
     }
 

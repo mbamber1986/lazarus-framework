@@ -35,34 +35,38 @@
 <body>
 <?php
 use App\System\Classes\Required\Requests;
+use App\System\Classes\Required\Security;
+
 require(__DIR__ . "/../vendor/autoload.php");
 
 
+
+
 use App\System\Core;
+use LazarusPhp\SessionManager\Sessions;
+use App\System\Classes\Required\Validation;
 
 
 Core::Boot();
 $request = new Requests();
-
-     
-    $request->Required()->request("username");
-    $request->request("email");
-
+$request->Required()->request("username");
+$request->Required()->request("email");
+if($request->OnComplete() == true){
+    echo "Loaded Correctly";
+if(Validation::VerifyToken($_SESSION['token'],$request->request("csrf_token")) ==true)
+{
+    $_SESSION['token'] = Validation::GetToken();
+}
+else
+{
+    echo "token is not a match";
+}
+}
+else
+{
     $request->ListErrors();
-
-    if($request->countErrors(1) == true)
-    {
-        echo "continue";
-    } 
-    else
-    {
-        echo '<a href="test.php">Back to Form</a>';
-    }
-
-  
-
+}
 ?>
-<a href="test.php">Back to Form</a>
 </body>
 
 </html>

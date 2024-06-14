@@ -35,6 +35,8 @@
 <body>
 <?php
 use App\System\Classes\Required\Requests;
+use App\System\Classes\Required\Validation;
+
 require(__DIR__ . "/../vendor/autoload.php");
 
 
@@ -43,34 +45,16 @@ use App\System\Core;
 
 Core::Boot();
 $request = new Requests();
-if($request->OnSubmit("save"))
-{
-    $request->required()->request("username");
-    $request->request("email");
-    if($request->OnComplete() == true)
-{
-    echo "We Can Continue";
-}
-else
-{
-      $request->ListErrors();
-}
-}
-else
-{
-    echo "No Submitted";
-}
-
-
-  
-
+$_SESSION['token'] = Validation::GetToken();
+echo "<a href='testsub.php?username=test&password=test&csrf_token=".Validation::GetToken()."'>Verify token</a>"
 ?>
-<form id="form" action="test.php" method="post">
+<form id="form" action="testsub.php" method="post">
     <label for="username">Username :</label>
-<input type="text" name="username" value="<?php $request->displayPost("username");?>">
+<input type="text" name="username" value="">
 <br>
 <label for="email">Email : </label>
-<input type="text" name="email" value="<?php $request->displayPost("email");?>">
+<input type="text" name="email" value="">
+<?php Validation::TokenInput(); ?>
 <br>
 <button name="save">Save</button>
 </form>
