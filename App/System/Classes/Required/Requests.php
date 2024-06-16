@@ -14,6 +14,7 @@ class Requests
     private $post;
     private $get;
     private $set;
+    private $required;
 
 
     public function  __construct()
@@ -21,16 +22,7 @@ class Requests
         $this->required = false;
     }
 
-    public function SafeHtml($name)
-    {
-     
-         $data = trim($name);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data,ENT_QUOTES,'UTF-8');
-        return $data;
   
-      
-    }
 
     public function Post($name)
     {
