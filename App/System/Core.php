@@ -9,8 +9,20 @@ class Core
     private static $instance;
     private function __construct()
     {
+      
+        // Add Boot Files here
+        Validation::Boot();
+
+        // Start Session Manager
         $session= new Sessions();
-        $session->Start();
+
+        
+        if(session_status() == PHP_SESSION_NONE)
+        {
+           $session->start(); 
+        //    session_regenerate_id(true);
+        }
+        
         // Add Security Class here to Autoload
         
     }

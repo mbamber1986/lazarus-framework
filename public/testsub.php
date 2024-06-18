@@ -49,12 +49,13 @@ use App\System\Classes\Required\Validation;
 
 Core::Boot();
 $request = new Requests();
+if($request->ExplicitBind("get")->request("save",true)){
 $request->Required()->request("username");
 $request->Required()->request("email");
 if($request->OnComplete() == true){
-    echo "Loaded Correctly";
-if(Validation::VerifyToken($_SESSION['token'],$request->request("csrf_token")) ==true)
+if(Validation::VerifyToken($_SESSION['token'],$request->request("csrf_token")) == true)
 {
+    echo "it works";
     $_SESSION['token'] = Validation::GetToken();
 }
 else
@@ -65,6 +66,7 @@ else
 else
 {
     $request->ListErrors();
+}
 }
 ?>
 </body>
