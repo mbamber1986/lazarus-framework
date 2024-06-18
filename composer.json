@@ -11,7 +11,9 @@
     "autoload-dev": {
         "psr-4": {
             "LazarusPhp\\SessionManager\\": "Dev/LazarusPhp/SessionManager/src/",
-            "LazarusPhp\\DatabaseManager\\": "Dev/LazarusPhp/DatabaseManager/src/"
+            "LazarusPhp\\DatabaseManager\\": "Dev/LazarusPhp/DatabaseManager/src/",
+            "LazarusPhp\\TfaManager\\": "Dev/LazarusPhp/TfaManager/src/"
+            
         }
     },
     "prefer-stable": true,
