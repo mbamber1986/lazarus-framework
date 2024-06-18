@@ -12,7 +12,6 @@ class Core
         $session= new Sessions();
         $session->Start();
         // Add Security Class here to Autoload
-        Validation::Boot();
         
     }
 

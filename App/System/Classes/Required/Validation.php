@@ -34,10 +34,7 @@ class Validation
         return (hash_equals($session,$token)) ? true : false;
     }
 
-    public static function GenerateTfa():int
-    {
-        return random_int(100000,999999);
-    }
+ 
 
     public static function TokenInput()
     {
@@ -47,18 +44,6 @@ class Validation
     // Manually Checks two factor Authentication
     // Will eventually Add support with linking multiple devices as well as email option
     // Two factor Authentication scripts will be moved to its own class as a later date
-    public static function VerifyTfa($input,$code) :int
-    {
-        return ($input === $code) ? true : false;   
-    }
-
-    public static function TfaInput()
-    {
-        for($i=0;$i<6;$i++)
-        {
-            echo "<input name='code[]' type='textbox' maxlength='1' size='1'>";
-        }
-    }
 
     public static function HashPassword($password)
     {
