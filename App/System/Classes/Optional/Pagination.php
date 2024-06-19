@@ -4,7 +4,8 @@ use LazarusPhp\DatabaseManager\Database;
 
 class Pagination extends Database
 {
-
+    
+  
     private $sql;
     private $recordsPerPage;
     private $totalRecords;
@@ -14,8 +15,8 @@ class Pagination extends Database
 
     public function __construct($sql,$results=10)
     {
-        parent::__construct();
-        
+
+     parent::__construct();
         // Return Nothing
     $this->sql = $sql;
     $this->recordsPerPage = $results;
@@ -28,6 +29,7 @@ class Pagination extends Database
         // return Nothing 
     }
 
+ 
 
     public function calculateTotalRecords()
     {
@@ -36,7 +38,7 @@ class Pagination extends Database
         $replace = "select COUNT(*) FROM";
 
         $sql = preg_replace($pattern,$replace,$this->sql);
-        $this->totalRecords = $this->FetchColumn($sql);
+        $this->totalRecords = $this->sql($sql)->FetchColumn($sql);
     }
 
     private function calculateTotalPages() {
@@ -59,9 +61,7 @@ class Pagination extends Database
 
     public function getRecords() { 
         $offset = $this->getOffset();
-        ->AddParams(":limit",$this->recordsPerPage);
-        ->AddParams(":offset",$offset);
-        return ->All($this->sql." LIMIT :limit OFFSET :offset ");
+        return $this->sql($this->sql." LIMIT :limit OFFSET :offset ",[":limit"=>$this->recordsPerPage,":offset"=>$offset])->All();
     }
 
     public function createLinks() {
