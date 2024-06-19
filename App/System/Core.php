@@ -27,13 +27,12 @@ class Core
         
     }
 
-
     // Load Defines
 
-
-    public static function LoadRouter()
+    public static function LoadRouter($path=null)
     {
-        include(self::GenerateRoot()."/App/System/Router/web.php");
+        is_null($path) ? $path = "/App/System/Router/web.php" : $path;
+        include(self::GenerateRoot().$path);
     }
 
     public static function GenerateRoot()
