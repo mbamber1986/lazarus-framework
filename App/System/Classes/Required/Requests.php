@@ -19,14 +19,19 @@ class Requests
     private $bind;
 
 
+    // Request Constructor
     public function  __construct()
     {
         $this->required = false;
         $this->bind = true;
     }
 
-
-
+/**
+ * Post Request Method
+ *
+ * @param [type] $name
+ * @return void
+ */
     public function Post($name)
     {
         (isset($_POST[$name])) ? $this->post = $_POST[$name] :  $this->post = null;
@@ -34,6 +39,18 @@ class Requests
         return ($this->set == true) ? isset($this->post) : $this->post;
     }
 
+/**
+ * Get Request Method
+ *
+ * @param [type] $name
+ * @return void
+ */
+    public function Get($name)
+    {
+        (isset($_GET[$name])) ? $this->get = $_GET[$name] :  $this->get = null;
+        ($this->required == true) ? $this->CheckEmpty($this->get, $name) : false;
+        return ($this->set == true) ? isset($this->get) : $this->get;
+    }
 
     public function countErrors()
     {
@@ -48,13 +65,6 @@ class Requests
         }
     }
 
-
-    public function Get($name)
-    {
-        (isset($_GET[$name])) ? $this->get = $_GET[$name] :  $this->get = null;
-        ($this->required == true) ? $this->CheckEmpty($this->get, $name) : false;
-        return ($this->set == true) ? isset($this->get) : $this->get;
-    }
 
     public function CheckEmpty($value, $name)
     {
