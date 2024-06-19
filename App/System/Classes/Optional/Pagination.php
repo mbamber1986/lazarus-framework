@@ -2,10 +2,9 @@
 namespace App\System\Classes\Optional;
 use LazarusPhp\DatabaseManager\Database;
 
-class Pagination
+class Pagination extends Database
 {
-    
-  
+
     private $sql;
     private $recordsPerPage;
     private $totalRecords;
@@ -15,8 +14,7 @@ class Pagination
 
     public function __construct($sql,$results=10)
     {
-
-        $this->db = new Database();
+        parent::__construct();
         
         // Return Nothing
     $this->sql = $sql;
@@ -30,7 +28,6 @@ class Pagination
         // return Nothing 
     }
 
- 
 
     public function calculateTotalRecords()
     {
@@ -39,7 +36,7 @@ class Pagination
         $replace = "select COUNT(*) FROM";
 
         $sql = preg_replace($pattern,$replace,$this->sql);
-        $this->totalRecords = $this->db->FetchColumn($sql);
+        $this->totalRecords = $this->FetchColumn($sql);
     }
 
     private function calculateTotalPages() {
@@ -62,9 +59,9 @@ class Pagination
 
     public function getRecords() { 
         $offset = $this->getOffset();
-        $this->db->AddParams(":limit",$this->recordsPerPage);
-        $this->db->AddParams(":offset",$offset);
-        return $this->db->All($this->sql." LIMIT :limit OFFSET :offset ");
+        ->AddParams(":limit",$this->recordsPerPage);
+        ->AddParams(":offset",$offset);
+        return ->All($this->sql." LIMIT :limit OFFSET :offset ");
     }
 
     public function createLinks() {
