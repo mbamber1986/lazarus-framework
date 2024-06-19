@@ -22,6 +22,7 @@ class Requests
     public function  __construct()
     {
         $this->required = false;
+        $this->bind = true;
     }
 
 
@@ -73,33 +74,38 @@ class Requests
         return ($this->countErrors() == $count) ? true : false;
     }
 
-    public function ExplicitBind($requestype)
+    public function BindMethod($requestype)
     {
-        $this->bind = $requestype;
+        $request = strtoupper($requestype);
+        if ($_SERVER['REQUEST_METHOD'] === $request) {
+            $this->bind = true;
+        } else {
+            $this->bind = false;
+        }
+
         return $this;
     }
 
     public function request($name, $set = false)
     {
-        // Get the Request Method
-        if($_SERVER['REQUEST_METHOD'] !== strtoupper($this->bind))
-        {
-            echo "Failed";
+       
+        $this->set = $set;
+        $request = $_SERVER['REQUEST_METHOD'];
+        if ($this->bind == true) {
+            
+            if ($request === "POST") {
+                $request = $this->Post($name);
+            } elseif ($request === "GET") {
+                return $this->Get($name);
+            }
         }
         else
         {
-        $request = $_SERVER['REQUEST_METHOD'];
-        $this->set = $set;
-
-        if ($request === "POST") {
-            $request = $this->Post($name);
-        } elseif ($request === "GET") {
-            return $this->Get($name);
+            echo "Its an invalid Response";
         }
         // Return Value
-        // $this->required = false;
+        $this->required = false;
+        $this->bind = true;
         return $request;
-        }
-        
     }
 }
