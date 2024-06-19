@@ -31,6 +31,11 @@ class Core
     // Load Defines
 
 
+    public static function LoadRouter()
+    {
+        include(self::GenerateRoot()."/App/System/Router/web.php");
+    }
+
     public static function GenerateRoot()
     {
         if(is_dir("../public")){
