@@ -52,6 +52,7 @@ class Requests
     public function Get($name)
     {
         (isset($_GET[$name])) ? $this->get = $_GET[$name] :  $this->get = null;
+        ($this->required == true) ? $this->CheckEmpty($this->get, $name) : false;
         return ($this->set == true) ? isset($this->get) : $this->get;
     }
 
