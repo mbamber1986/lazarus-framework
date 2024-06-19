@@ -98,14 +98,14 @@ class Requests
             } elseif ($request === "GET") {
                 return $this->Get($name);
             }
+            $this->required = false;
+            $this->bind = true;
+            return $request;
         }
         else
         {
             echo "Its an invalid Response";
         }
         // Return Value
-        $this->required = false;
-        $this->bind = true;
-        return $request;
     }
 }
