@@ -31,7 +31,7 @@ class Core
 
     public static function LoadRouter($path=null)
     {
-        is_null($path) ? $path = "/App/System/Router/web.php" : $path;
+        is_null($path) ? $path = "/App/System/Router/router.php" : $path;
         include(self::GenerateRoot().$path);
     }
 
