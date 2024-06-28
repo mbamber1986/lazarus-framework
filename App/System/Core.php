@@ -1,22 +1,44 @@
 <?php
 namespace App\System;
 
+use App\System\Classes\Optional\Errors;
+use App\System\Classes\Optional\PathManager;
+use App\System\Classes\Required\CustomErrorHandler;
 use App\System\Classes\Required\Validation;
+use Dotenv\Validator;
 use LazarusPhp\SessionManager\Sessions;
+use Exception;
 
 class Core
 {
     private static $instance;
+    private static $directory;
+
+    public static $rootOverride = false;
+    public static $folder;
+
+    private static $includes = [
+        "Router"=>"/App/System/Router/testrouter.php"
+    ];
+
     private function __construct()
     {
       
-        // Add Boot Files here
+        // Add Boot Structure here
         Validation::Boot();
+        PathManager::Boot();
+        CustomErrorHandler::Boot();
+        // Structure::Boot();
+        self::$directory = self::GenerateRoot();
+
+        foreach(self::$includes as $key => $file)
+        {
+
+        }
 
         // Start Session Manager
         $session= new Sessions();
 
-        
         if(session_status() == PHP_SESSION_NONE)
         {
            $session->start(); 
@@ -25,14 +47,6 @@ class Core
         
         // Add Security Class here to Autoload
         
-    }
-
-    // Load Defines
-
-    public static function LoadRouter($path=null)
-    {
-        is_null($path) ? $path = "/App/System/Router/router.php" : $path;
-        include(self::GenerateRoot().$path);
     }
 
     public static function GenerateRoot()
@@ -50,12 +64,33 @@ class Core
     }
 
 
+    public static function LoopIncludes()
+    {
+        foreach(self::$includes as $key => $value)
+        {
+            self::$includes[$key] = $value;
+        }
+    }
+
+
+    public static function RequireFile($name)
+    {
+        $path = self::$directory.self::$includes[$name];
+        if(is_file($path))
+        {
+            return $path;
+        }
+        else
+        {
+            echo "NO File Found";
+        }
+    } 
+
     // Destroy Instance When Finished.
     public function __destruct()
     {
         static::$instance=NULL;
     }
-
 
      public static function Boot()
     {
