@@ -1,5 +1,5 @@
 <?php
+use App\System\Classes\Response;
 require(__DIR__ . "/../vendor/autoload.php");
-use App\System\Core;
-Core::Boot();
-Core::LoadRouter();
+use App\System\App;
+(new App());

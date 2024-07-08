@@ -6,7 +6,7 @@ use Laminas\Diactoros\Response\HtmlResponse;
 $router = Router::create();
 
 // Output the Default page
-$router->get('/', function () {
+$router->get('/dev?', function () {
     return 'Welcome to LazarusPhp Framework';
 });
 

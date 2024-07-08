@@ -10,9 +10,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "LazarusPhp\\SessionManager\\": "Dev/LazarusPhp/SessionManager/src/",
-            "LazarusPhp\\DatabaseManager\\": "Dev/LazarusPhp/DatabaseManager/src/",
-            "LazarusPhp\\TfaManager\\": "Dev/LazarusPhp/TfaManager/src/"
+           "LazarusPhp\\TfaManager\\": "Dev/LazarusPhp/TfaManager/src/"
             
         }
     },
@@ -31,7 +29,10 @@
         "vlucas/phpdotenv": "^5.2",
         "laminas/laminas-diactoros": "^2.5",
         "phpmailer/phpmailer": "^6.2",
-        "miladrahimi/phprouter": "^5.1"
+        "miladrahimi/phprouter": "^5.1",
+        "lazarusphp/sessionmanager": "^v1.0.1",
+        "lazarusphp/databasemanager": "^v1.0.0"
+        
     }
 
 }

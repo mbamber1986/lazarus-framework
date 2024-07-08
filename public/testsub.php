@@ -1,7 +1,7 @@
 <html>
 <head>
     <title></title>
-    <style >
+    <style>
 
         html,body
         {
@@ -42,14 +42,14 @@ require(__DIR__ . "/../vendor/autoload.php");
 
 
 
-use App\System\Core;
+use App\System\App;
 use LazarusPhp\SessionManager\Sessions;
 use App\System\Classes\Required\Validation;
 
 
-Core::Boot();
+$app = new App();
 $request = new Requests();
-if($request->request("save",true)){
+if($request->BindMethod("Post")->request("save",true)){
 $request->Required()->request("username");
 $request->Required()->request("email");
 if($request->OnComplete() == true){

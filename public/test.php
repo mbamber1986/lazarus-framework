@@ -1,3 +1,4 @@
+
 <html>
 <head>
     <title></title>
@@ -34,19 +35,19 @@
 </head>
 <body>
 <?php
+use App\System\Classes\Optional\Pagination;
 use App\System\Classes\Required\Requests;
 use App\System\Classes\Required\Validation;
-
+use App\System\App;
+use App\System\Classes\Response;
 require(__DIR__ . "/../vendor/autoload.php");
 
 
-use App\System\Core;
 
-
-Core::Boot();
+$app = new App();
 $request = new Requests();
 $_SESSION['token'] = Validation::GetToken();
-echo "<a href='testsub.php?username=test&password=test&csrf_token=".Validation::GetToken()."'>Verify token</a>"
+echo "<a href='testsub.php?username=test&email=mbamber1986&csrf_token=".Validation::GetToken()."&save'>Verify token</a>";
 ?>
 <form id="form" action="testsub.php" method="post">
     <label for="username">Username :</label>

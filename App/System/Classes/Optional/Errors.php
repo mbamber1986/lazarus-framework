@@ -36,7 +36,6 @@ class Errors
         }
         echo "</pre>";
 
-    
+        exit();
         }
-
 }

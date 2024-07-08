@@ -38,14 +38,14 @@ class Pagination extends Database
         $replace = "select COUNT(*) FROM";
 
         $sql = preg_replace($pattern,$replace,$this->sql);
-        $this->totalRecords = $this->sql($sql)->FetchColumn($sql);
+        $this->totalRecords = $this->sql($sql)->FetchColumn();
     }
 
     private function calculateTotalPages() {
         $this->totalPages = ceil($this->totalRecords / $this->recordsPerPage);
     }
 
-    public function getCurrentPage() {
+    private function getCurrentPage() {
         $this->currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         if ($this->currentPage < 1) {
             $this->currentPage = 1;

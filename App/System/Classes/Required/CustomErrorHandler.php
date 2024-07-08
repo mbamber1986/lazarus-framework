@@ -1,8 +1,9 @@
 <?php
 namespace App\System\Classes\Required;
 use App\System\Classes\Required\Validation;
+use LazarusPhp\DatabaseManager\Database;
 
-class CustomErrorHandler {
+class CustomErrorHandler extends Database {
 
     private static $instance;
     private function __construct()
@@ -21,7 +22,7 @@ class CustomErrorHandler {
         return static::$instance;
     }
     
-    private function __destruct()
+    public function __destruct()
     {
         restore_error_handler();
     }
@@ -43,43 +44,45 @@ class CustomErrorHandler {
         E_DEPRECATED => 'Deprecated',
         E_USER_DEPRECATED => 'User Deprecated'
     ];
+
+    public function GenerateErrorLog()
+    {
+        
+    }
+
     
     public static function DisplayError($file,$linevalue)
     {
         $file = file_get_contents($file);
-        $file = Validation::SafeHtml($file);
+        $file = htmlspecialchars($file);
         $lines = explode("\n", $file);
-        if ($file === false) {
-            echo "Failed to read the file: " . $file . " <br>";
-        } 
-        else {
-        echo "<pre style='padding:0px; margin:auto;color:white;background-color:#515151; border:solid 1px #000; max-height:300px; width:80%;overflow-y:auto;'>";
+       
+        echo "<pre style='padding:0px; margin:auto;color:white;background-color:#515151; border:solid 1px #000; max-height:300px; width:80%; overflow-y:auto;'>";
         foreach ($lines as $lineNumber => $line)
         {
                 if ($lineNumber + 1 == $linevalue) {
                     // Highlight the error line
-                    echo "<div style='padding:0px; color:white;'>" . ($lineNumber + 1) . " : " . $line . "</div>  <br>";
+                    echo "<div style='padding:0px; color:yellow;'>" . ($lineNumber + 1) . " : " . $line . "</div>  <br>";
                 } else {
-                    echo "<div style=''>";
+                    echo "<div style='color:white;'>";
                     echo ($lineNumber + 1) . ": " . $line . " <br>";
                     echo "</div>";
                     
                 }
-            }
         }
-        echo "</pre>";
-        exit();
+                 echo "</pre>";
         }
+
+
     public static function handleError($errno, $errstr, $errfile, $errline) {
         $errorType = isset(self::$errorTypes[$errno]) ? self::$errorTypes[$errno] : 'Unknown Error';
         echo "Error Type: $errorType <br>";
         echo "Error Message: $errstr <br>";
         echo "File: $errfile <br>";
-        echo "Line: $errline <br>";
+        echo "Line: $errline <br>"; 
         self::DisplayError($errfile,$errline);
         // Link this to the Database
-        $backtrace =var_dump(debug_backtrace());
-        echo "Backtrace: <br>$backtrace <br>";
+        // Logs need adding
         // Prevent the PHP error handler from executing
         return true;
     }
