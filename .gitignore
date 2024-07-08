@@ -1,6 +1,8 @@
 vendor
 Dev
 config.php
+config.ini
+.env
 .vscode
 public/test.php
 public/testsub.php
