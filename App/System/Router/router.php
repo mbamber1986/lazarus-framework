@@ -1,14 +1,14 @@
 <?php
+
+use App\Http\Controllers\HomeController;
 use MiladRahimi\PhpRouter\Router;
 use MiladRahimi\PhpRouter\Exceptions\RouteNotFoundException;
 use Laminas\Diactoros\Response\HtmlResponse;
+use App\System\Classes\Required\CustomErrorHandler;
 
 $router = Router::create();
-
 // Output the Default page
-$router->get('/dev?', function () {
-    return 'Welcome to LazarusPhp Framework';
-});
+$router->get('/?',[HomeController::class, 'index'],"home");
 
 try {
     $router->dispatch();

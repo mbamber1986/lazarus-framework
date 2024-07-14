@@ -85,7 +85,7 @@ class Requests
         return ($this->countErrors() == $count) ? true : false;
     }
 
-    public function BindMethod($requestype)
+    public function Bind($requestype)
     {
         $request = strtoupper($requestype);
         if ($_SERVER['REQUEST_METHOD'] === $request) {
@@ -93,30 +93,22 @@ class Requests
         } else {
             $this->bind = false;
         }
-
-        return $this;
+        return $this->bind;
     }
 
     public function request($name, $set = false)
     {
-       
         $this->set = $set;
         $request = $_SERVER['REQUEST_METHOD'];
-        if ($this->bind == true) {
-            
-            if ($request === "POST") {
-                $request = $this->Post($name);
-            } elseif ($request === "GET") {
-                return $this->Get($name);
-            }
-            $this->required = false;
-            $this->bind = true;
-            return $request;
+        if ($request === "POST") {
+            $request = $this->Post($name);
+        } elseif ($request === "GET") {
+            return $this->Get($name);
         }
-        else
-        {
-            echo "Its an invalid Response";
-        }
+        
+        $this->required = false;
+        return $request;
+    
         // Return Value
     }
 }

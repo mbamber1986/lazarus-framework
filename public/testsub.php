@@ -49,7 +49,7 @@ use App\System\Classes\Required\Validation;
 
 $app = new App();
 $request = new Requests();
-if($request->BindMethod("Post")->request("save",true)){
+if($request->BindMethod("post")->request("save",true)){
 $request->Required()->request("username");
 $request->Required()->request("email");
 if($request->OnComplete() == true){
@@ -57,7 +57,7 @@ if(Validation::VerifyToken($_SESSION['token'],$request->request("csrf_token")) =
 {
     echo "Session works";
     $_SESSION['token'] = Validation::GetToken();
-}
+    
 else
 {
     echo "token is not a match";

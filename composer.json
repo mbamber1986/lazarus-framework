@@ -10,6 +10,7 @@
     },
     "autoload-dev": {
         "psr-4": {
+           "LazarusPhp\\AuthManager\\": "Dev/LazarusPhp/AuthManager/src",
            "LazarusPhp\\TfaManager\\": "Dev/LazarusPhp/TfaManager/src/"
             
         }

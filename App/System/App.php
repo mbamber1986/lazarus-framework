@@ -22,6 +22,7 @@ class App
         // Pass Config File to Database;
         CredentialsManager::SetConfig($this->path["Config"]);
         include_once($this->path["Router"]);
+
         $this->boot();
         
     }

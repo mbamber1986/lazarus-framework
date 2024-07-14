@@ -40,23 +40,37 @@ use App\System\Classes\Required\Requests;
 use App\System\Classes\Required\Validation;
 use App\System\App;
 use App\System\Classes\Response;
+use LazarusPhp\AuthManager\Auth;
+
 require(__DIR__ . "/../vendor/autoload.php");
 
 
 
 $app = new App();
+
 $request = new Requests();
-$_SESSION['token'] = Validation::GetToken();
-echo "<a href='testsub.php?username=test&email=mbamber1986&csrf_token=".Validation::GetToken()."&save'>Verify token</a>";
+$username = "";
+$password = "";
+if($request->Bind("Post") == true && $request->request("save",true))
+{
+    $username = $request->request("username");
+    $password = $request->request("password");
+    $auth = new Auth();
+    
+    if($auth->Authenticate($username,$password)==true)
+    {
+        echo "Logged in successfully";
+    }
+    else
+    {
+        echo "Login failed";
+    }
+}
 ?>
-<form id="form" action="testsub.php" method="post">
-    <label for="username">Username :</label>
-<input type="text" name="username" value="">
-<br>
-<label for="email">Email : </label>
-<input type="text" name="email" value="">
-<?php Validation::TokenInput(); ?>
-<br>
+<form id="form" action="test.php" method="post">
+<input type="text" name="username" value="<?php echo Validation::SafeHtml($username) ?>">
+<input type="password" name="password" value="<?php echo Validation::SafeHtml($password) ?>">
+
 <button name="save">Save</button>
 </form>
 </body>
