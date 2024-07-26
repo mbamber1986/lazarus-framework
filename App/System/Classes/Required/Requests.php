@@ -7,108 +7,143 @@ use Exception;
 use LazarusPhp\DatabaseManager\Database;
 use PDOException;
 
-class Requests
+use function PHPSTORM_META\elementType;
+
+class Requests extends Validation
 {
 
-    public $validate;
-    public $formerror = [];
+    private $params = [];
     private $post;
     private $get;
+    private $any;
+
     private $set;
-    private $required;
-    private $bind;
+
+    private $continue;
 
 
     // Request Constructor
     public function  __construct()
     {
-        $this->required = false;
-        $this->bind = true;
+        $this->continue = true;
     }
 
-/**
- * Post Request Method
- *
- * @param [type] $name
- * @return void
- */
-    public function Post($name)
+    /**
+     * Post Request Method
+     *
+     * @param [type] $name
+     * @return void
+     */
+
+     public function DisplayErrors()
+     {
+        // Loop Errors
+     }
+
+    public function ValidateParams($name, $params)
+    {
+        $params = $this->ExplodeParams($params);
+
+            if (isset($params->required)) {
+                if ($params->required == true) {
+                    if (empty($name)) {
+                        $this->continue = false;
+                        echo "Empty Value";
+                    }
+                }
+            }
+            // Continue
+    
+             if (isset($params->email)) {
+                if ($params->email == true) {
+                    if($this->ValidateEmail($name) == false)
+                    {
+                        $this->continue = false;
+                        echo "Valid Email Required";
+                    }
+                }
+            }
+        
+    }
+
+    public function Post($name, $params = null)
     {
         (isset($_POST[$name])) ? $this->post = $_POST[$name] :  $this->post = null;
-        ($this->required == true) ? $this->CheckEmpty($this->post, $name) : false;
-        return ($this->set == true) ? isset($this->post) : $this->post;
+
+        if (!is_null($params)) {
+            $this->ValidateParams($this->post, $params);
+        }
+
+        if ($this->continue == true) {
+            return $this->post;
+        } else {
+            echo "failed";
+        }
     }
 
-/**
- * Get Request Method
- *
- * @param [type] $name
- * @return void
- */
-    public function Get($name)
+    /**
+     * Get Request Method
+     *
+     * @param [type] $name
+     * @return void
+     */
+    public function Get($name,$params=null)
     {
         (isset($_GET[$name])) ? $this->get = $_GET[$name] :  $this->get = null;
-        ($this->required == true) ? $this->CheckEmpty($this->get, $name) : false;
-        return ($this->set == true) ? isset($this->get) : $this->get;
-    }
+        
+        if(!is_null($params))
+        {
+            $this->ValidateParams($this->get, $params);
+        }
 
-    public function countErrors()
-    {
-        // This works 
-        return count($this->formerror);
-    }
-
-    public function ListErrors($class = null)
-    {
-        foreach ($this->formerror as $error) {
-            echo "<div class='errors'>" . $error . "</div>";
+        if ($this->continue == true) {
+            return $this->get;
+        } else {
+            echo "failed";
         }
     }
 
 
-    public function CheckEmpty($value, $name)
+
+
+
+   
+
+    public function GetMethod()
     {
-        if (empty($value) || ($value = "") || is_null($value)) {
-            $this->formerror[] = "An Error Occurred : Empty Value for input $name";
-        }
+        return $_SERVER['REQUEST_METHOD'];
     }
 
-    public function Required()
+    private function ExplodeParams($params)
     {
-        $this->required = true;
-        return $this;
+        $explode = explode("|", $params);
+
+        foreach ($explode as $exploded) {
+            $this->params[$exploded] = true;
+        }
+
+        return (object) $this->params;
     }
+
 
     // Call this method at the end to allow the statement to continue.
-    public function OnComplete(int $count = 0): int
-    {
-        return ($this->countErrors() == $count) ? true : false;
-    }
 
-    public function Bind($requestype)
-    {
-        $request = strtoupper($requestype);
-        if ($_SERVER['REQUEST_METHOD'] === $request) {
-            $this->bind = true;
-        } else {
-            $this->bind = false;
-        }
-        return $this->bind;
-    }
 
-    public function request($name, $set = false)
+
+    public function any($name, $params=null)
     {
-        $this->set = $set;
-        $request = $_SERVER['REQUEST_METHOD'];
-        if ($request === "POST") {
-            $request = $this->Post($name);
-        } elseif ($request === "GET") {
-            return $this->Get($name);
-        }
+        (isset($_REQUEST[$name])) ? $this->any = $_REQUEST[$name] : $this->any = null;
+
         
-        $this->required = false;
-        return $request;
-    
-        // Return Value
+        if(!is_null($params))
+        {
+            $this->ValidateParams($this->any, $params);
+        }
+
+        if ($this->continue == true) {
+            return $this->any;
+        } else {
+            echo "failed";
+        }
     }
 }

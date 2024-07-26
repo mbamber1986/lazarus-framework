@@ -4,8 +4,12 @@ namespace App\System\Classes\Required;
 class Validation
 {
 
-    public static $instance;
+    public static function Boot()
+    {
+
+    }
     public static $token;
+    public $errors;
 
 
     public function __construct()
@@ -13,15 +17,6 @@ class Validation
         // Generate a New Token
         self::$token = bin2hex(random_bytes(32));
         
-    }
-
-    public static function Boot()
-    {
-        if (!isset(static::$instance)) {
-            $c = get_called_class();
-            static::$instance = new $c();
-        }
-        return static::$instance;
     }
 
     public static function GetToken()
@@ -55,18 +50,41 @@ class Validation
         return password_verify($input,$result) ? true : false;
     }
 
+// Add Sanitization and Validation
 
-
-    public static function ValidateEmail($email)
+    public function SanitiseEmail($request)
     {
-        return (filter_var($email, FILTER_VALIDATE_EMAIL) !== false);
+        return filter_var($request,FILTER_SANITIZE_EMAIL);
+    }
+
+    public function ValidateEmail($request)
+    {
+        return filter_var($request,FILTER_VALIDATE_EMAIL);
+    }
+
+    public function SantiseUrl($request)
+    {
+        return filter_var($request,FILTER_SANITIZE_URL);
+    }
+
+    public function ValidateUrl($request)
+    {
+        return filter_var($request,FILTER_VALIDATE_URL);
+    }
+
+    // Check if a field is empty
+    public function required($value, $name)
+    {
+        if (empty($value) || ($value = "") || is_null($value)) {
+            // Add Error Code Later
+        }
     }
 
 
 
     // Valdate Data and forms.
     public static function SafeHtml($name)
-    {#
+    {
         $data = stripslashes($name);
         $data = htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
         return $data;
