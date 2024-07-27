@@ -4,14 +4,13 @@ namespace App\System\Classes\Required;
 abstract class Validation
 {
     public static $token;
-    public $errors;
+    public $errors = [];
 
 
     public function __construct()
     {
         // Generate a New Token
         self::$token = bin2hex(random_bytes(32));
-        
     }
 
     public static function GetToken()
@@ -57,6 +56,22 @@ abstract class Validation
         return filter_var($request,FILTER_VALIDATE_EMAIL);
     }
 
+    public function HasStrongPassword($password)
+    {
+// Validate password strength
+
+        $uppercase = preg_match('@[A-Z]@', $password);
+        $lowercase = preg_match('@[a-z]@', $password);
+        $number = preg_match('@[0-9]@', $password);
+//        $specialChars = preg_match('@[^\w]@', $password);
+
+        if (!$uppercase || !$lowercase || !$number || strlen($password) < 8) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     public function SantiseUrl($request)
     {
         return filter_var($request,FILTER_SANITIZE_URL);
@@ -71,7 +86,7 @@ abstract class Validation
     public function required($value, $name)
     {
         if (empty($value) || ($value = "") || is_null($value)) {
-            // Add Error Code Later
+            return true;
         }
     }
 
