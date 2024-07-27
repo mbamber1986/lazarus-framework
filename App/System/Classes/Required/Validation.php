@@ -1,7 +1,7 @@
 <?php
 namespace App\System\Classes\Required;
 
-class Validation
+abstact class Validation
 {
 
     public static function Boot()
