@@ -7,6 +7,7 @@ class Requests extends Validation
 
     private $params = [];
     private $post;
+    private $name;
     private $get;
     private $any;
 
@@ -26,49 +27,43 @@ class Requests extends Validation
      * @return void
      */
 
-     public function DisplayErrors()
-     {
-        // Loop Errors
-     }
 
     public function ValidateParams($name, $params)
     {
         $params = $this->ExplodeParams($params);
 
-            if (isset($params->required)) {
-                if ($params->required == true) {
-                    if (empty($name)) {
-                        $this->continue = false;
-                        echo "Empty Value";
-                    }
+        if (isset($params->required)) {
+            if ($params->required == true) {
+                if (empty($name)) {
+                    $this->continue = false;
+                    $this->errors[] = "Required Field: " . $this->name;
                 }
             }
-            // Continue
-    
-             if (isset($params->email)) {
-                if ($params->email == true) {
-                    if($this->ValidateEmail($name) == false)
-                    {
-                        $this->continue = false;
-                        echo "Valid Email Required";
-                    }
+        }
+        // Continue
+
+        if (isset($params->email)) {
+            if ($params->email == true) {
+                if (!$this->ValidateEmail($name)) {
+                    $this->continue = false;
+                    $this->errors[] = "Valid Email Required for " . $this->name;
                 }
             }
-        
+        }
     }
 
     public function Post($name, $params = null)
     {
+        $this->name = $name;
         (isset($_POST[$name])) ? $this->post = $_POST[$name] :  $this->post = null;
 
         if (!is_null($params)) {
             $this->ValidateParams($this->post, $params);
         }
-
+        $this->name = null;
         if ($this->continue == true) {
             return $this->post;
         } else {
-            echo "failed";
         }
     }
 
@@ -78,12 +73,11 @@ class Requests extends Validation
      * @param [type] $name
      * @return void
      */
-    public function Get($name,$params=null)
+    public function Get($name, $params = null)
     {
         (isset($_GET[$name])) ? $this->get = $_GET[$name] :  $this->get = null;
-        
-        if(!is_null($params))
-        {
+
+        if (!is_null($params)) {
             $this->ValidateParams($this->get, $params);
         }
 
@@ -98,7 +92,7 @@ class Requests extends Validation
 
 
 
-   
+
 
     public function GetMethod()
     {
@@ -121,13 +115,12 @@ class Requests extends Validation
 
 
 
-    public function any($name, $params=null)
+    public function any($name, $params = null)
     {
         (isset($_REQUEST[$name])) ? $this->any = $_REQUEST[$name] : $this->any = null;
 
-        
-        if(!is_null($params))
-        {
+
+        if (!is_null($params)) {
             $this->ValidateParams($this->any, $params);
         }
 
