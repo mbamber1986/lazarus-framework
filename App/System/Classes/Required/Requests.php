@@ -10,8 +10,6 @@ class Requests extends Validation
     private $get;
     private $any;
 
-    private $set;
-
     private $continue;
 
 
