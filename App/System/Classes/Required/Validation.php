@@ -3,11 +3,6 @@ namespace App\System\Classes\Required;
 
 abstract class Validation
 {
-
-    public static function Boot()
-    {
-
-    }
     public static $token;
     public $errors;
 
