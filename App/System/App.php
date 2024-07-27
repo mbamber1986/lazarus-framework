@@ -55,7 +55,6 @@ class App
 
     public function boot($name=null)
     {
-        Validation::Boot();
         CustomErrorHandler::Boot();
         $session = new Sessions();
         if(session_status() == PHP_SESSION_NONE)
