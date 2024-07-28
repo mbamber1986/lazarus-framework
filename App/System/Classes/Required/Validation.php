@@ -78,6 +78,7 @@ abstract class Validation
                 if ($validPw->uppercase == true) {
                     if (!$uppercase) {
                         $this->pwCheck = false;
+                        $this->errors[] = "Password Must contaoin at least one Uppercase Letter";
                     }
                 }
             }
@@ -88,6 +89,7 @@ abstract class Validation
                 {
                     if (!$lowercase) {
                         $this->pwCheck = false;
+                        $this->errors[] = "Password Must have at least one lowercase letter";
                     }
                 }
             }
@@ -98,6 +100,7 @@ abstract class Validation
                 {
                     if (!$number) {
                         $this->pwCheck = false;
+                        $this->errors[] = "Password must contain at least one number";
                     }
                 }
             }
@@ -108,6 +111,7 @@ abstract class Validation
                 {
                     if ($lenght < 8) {
                         $this->pwCheck = false;
+                        $this->errors[] = "Password Must be a minimum of 8 Characters";
                     }
                 }
             }
@@ -118,6 +122,7 @@ abstract class Validation
                 {
                     if ($lenght > 20) {
                         $this->pwCheck = false;
+                        $this->errors[] = "Password cannit exceed 20 characters";
                     }
                 }
             }
@@ -128,6 +133,7 @@ abstract class Validation
                 {
                     if (!$specialChars) {
                         $this->pwCheck = false;
+                        $this->errors[] = "Password Must contain at least one Special Character";
                     }
                 }
             }
