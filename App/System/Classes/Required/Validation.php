@@ -1,10 +1,12 @@
 <?php
+
 namespace App\System\Classes\Required;
 
 abstract class Validation
 {
     public static $token;
     public $errors = [];
+    public $passwordValidate = [];
 
 
     public function __construct()
@@ -15,19 +17,19 @@ abstract class Validation
 
     public static function getToken()
     {
-        return self::$token;   
+        return self::$token;
     }
 
-    public static function verifyToken($session,$token)
+    public static function verifyToken($session, $token)
     {
-        return (hash_equals($session,$token)) ? true : false;
+        return (hash_equals($session, $token)) ? true : false;
     }
 
- 
+
 
     public static function tokenInput()
     {
-        echo '<input hidden" name="csrf_token" value="'.self::GetToken().'">';
+        echo '<input hidden" name="csrf_token" value="' . self::GetToken() . '">';
     }
 
     // Manually Checks two factor Authentication
@@ -39,46 +41,116 @@ abstract class Validation
         return password_hash($password, PASSWORD_DEFAULT);
     }
 
-    public static function passwordVerify($input,$result)
+    public static function passwordVerify($input, $result)
     {
-        return password_verify($input,$result) ? true : false;
+        return password_verify($input, $result) ? true : false;
     }
 
-// Add Sanitization and Validation
+    // Add Sanitization and Validation
 
     public function sanitiseEmail($request)
     {
-        return filter_var($request,FILTER_SANITIZE_EMAIL);
+        return filter_var($request, FILTER_SANITIZE_EMAIL);
     }
 
     public function validateEmail($request)
     {
-        return filter_var($request,FILTER_VALIDATE_EMAIL);
+        return filter_var($request, FILTER_VALIDATE_EMAIL);
     }
 
-    public function hasStrongPassword($password)
+    public function hasStrongPassword($password,$options)
     {
-        
-        $uppercase = preg_match('@[A-Z]@', $password);
-        $lowercase = preg_match('@[a-z]@', $password);
-        $number = preg_match('@[0-9]@', $password);
-    //    $specialChars = preg_match('@[^\w]@', $password);
+        $this->pwCheck = true;
+            $uppercase = preg_match('@[A-Z]@', $password);
+            $lowercase = preg_match('@[a-z]@', $password);
+            $number = preg_match('@[0-9]@', $password);
+            $lenght = strlen($password);
+            $specialChars = preg_match('@[^\w]@', $password);
+            $explode = explode("|", $options);
 
-        if (!$uppercase || !$lowercase || !$number || strlen($password) < 8) {
-            return false;
-        } else {
-            return true;
-        }
+            foreach ($explode as $exploded) {
+                $this->passwordValidate[$exploded] = true;
+            }
+
+            $validPw = (object) $this->passwordValidate;
+
+            if (isset($validPw->uppercase)) {
+                if ($validPw->uppercase == true) {
+                    if (!$uppercase) {
+                        $this->pwCheck = false;
+                    }
+                }
+            }
+
+            if(isset($validPw->lowercase))
+            {
+                if($validPw->lowercase == true)
+                {
+                    if (!$lowercase) {
+                        $this->pwCheck = false;
+                    }
+                }
+            }
+
+            if(isset($validPw->number))
+            {
+                if($validPw->number == true)
+                {
+                    if (!$number) {
+                        $this->pwCheck = false;
+                    }
+                }
+            }
+
+            if(isset($validPw->minlenght))
+            {
+                if($validPw->minlenght == true)
+                {
+                    if ($lenght < 8) {
+                        $this->pwCheck = false;
+                    }
+                }
+            }
+
+            if(isset($validPw->maxlenght))
+            {
+                if($validPw->maxenght == true)
+                {
+                    if ($lenght > 20) {
+                        $this->pwCheck = false;
+                    }
+                }
+            }
+
+            if(isset($validPw->specials))
+            {
+                if($validPw->specials == true)
+                {
+                    if (!$specialChars) {
+                        $this->pwCheck = false;
+                    }
+                }
+            }
+    
+
+            if($this->pwCheck == false)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
     }
 
     public function santiseUrl($request)
     {
-        return filter_var($request,FILTER_SANITIZE_URL);
+        return filter_var($request, FILTER_SANITIZE_URL);
     }
 
     public function validateUrl($request)
     {
-        return filter_var($request,FILTER_VALIDATE_URL);
+        return filter_var($request, FILTER_VALIDATE_URL);
     }
 
     // Check if a field is empty
