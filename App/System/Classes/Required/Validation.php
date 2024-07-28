@@ -59,14 +59,22 @@ abstract class Validation
         return filter_var($request, FILTER_VALIDATE_EMAIL);
     }
 
+
     public function hasStrongPassword($password,$options)
     {
+        // Options Support upper lower numbers specials minlength maxlength
+
         $this->pwCheck = true;
+        // Check if Uppercase
             $uppercase = preg_match('@[A-Z]@', $password);
+            // Check if Lower case
             $lowercase = preg_match('@[a-z]@', $password);
+            // Check for numbers
             $number = preg_match('@[0-9]@', $password);
-            $lenght = strlen($password);
+            // Check for String length
+            $length = strlen($password);
             $specialChars = preg_match('@[^\w]@', $password);
+            
             $explode = explode("|", $options);
 
             foreach ($explode as $exploded) {
@@ -106,22 +114,22 @@ abstract class Validation
                 }
             }
 
-            if(isset($validPw->minlenght))
+            if(isset($validPw->minlength))
             {
-                if($validPw->minlenght == true)
+                if($validPw->minlength == true)
                 {
-                    if ($lenght < 8) {
+                    if ($length < 8) {
                         $this->pwCheck = false;
                         $this->errors[] = "Password Must be a minimum of 8 Characters";
                     }
                 }
             }
 
-            if(isset($validPw->maxlenght))
+            if(isset($validPw->maxlength))
             {
                 if($validPw->maxenght == true)
                 {
-                    if ($lenght > 20) {
+                    if ($length > 20) {
                         $this->pwCheck = false;
                         $this->errors[] = "Password cannit exceed 20 characters";
                     }
