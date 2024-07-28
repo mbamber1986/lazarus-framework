@@ -28,7 +28,7 @@ class Requests extends Validation
      */
 
 
-    public function ValidateParams($name, $params)
+    public function validateParams($name, $params)
     {
         $params = $this->ExplodeParams($params);
 
@@ -40,6 +40,8 @@ class Requests extends Validation
                 }
             }
         }
+
+        if(isset($params->StrongPas))
         // Continue
 
         if (isset($params->email)) {
@@ -52,13 +54,13 @@ class Requests extends Validation
         }
     }
 
-    public function Post($name, $params = null)
+    public function post($name, $params = null)
     {
         $this->name = $name;
         (isset($_POST[$name])) ? $this->post = $_POST[$name] :  $this->post = null;
 
         if (!is_null($params)) {
-            $this->ValidateParams($this->post, $params);
+            $this->validateParams($this->post, $params);
         }
         $this->name = null;
         if ($this->continue == true) {
@@ -73,12 +75,12 @@ class Requests extends Validation
      * @param [type] $name
      * @return void
      */
-    public function Get($name, $params = null)
+    public function get($name, $params = null)
     {
         (isset($_GET[$name])) ? $this->get = $_GET[$name] :  $this->get = null;
 
         if (!is_null($params)) {
-            $this->ValidateParams($this->get, $params);
+            $this->validateParams($this->get, $params);
         }
 
         if ($this->continue == true) {
@@ -121,7 +123,7 @@ class Requests extends Validation
 
 
         if (!is_null($params)) {
-            $this->ValidateParams($this->any, $params);
+            $this->validateParams($this->any, $params);
         }
 
         if ($this->continue == true) {
