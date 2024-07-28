@@ -13,19 +13,19 @@ abstract class Validation
         self::$token = bin2hex(random_bytes(32));
     }
 
-    public static function GetToken()
+    public static function getToken()
     {
         return self::$token;   
     }
 
-    public static function VerifyToken($session,$token)
+    public static function verifyToken($session,$token)
     {
         return (hash_equals($session,$token)) ? true : false;
     }
 
  
 
-    public static function TokenInput()
+    public static function tokenInput()
     {
         echo '<input hidden" name="csrf_token" value="'.self::GetToken().'">';
     }
@@ -34,36 +34,35 @@ abstract class Validation
     // Will eventually Add support with linking multiple devices as well as email option
     // Two factor Authentication scripts will be moved to its own class as a later date
 
-    public static function HashPassword($password)
+    public static function hashPassword($password)
     {
         return password_hash($password, PASSWORD_DEFAULT);
     }
 
-    public static function PasswordVerify($input,$result)
+    public static function passwordVerify($input,$result)
     {
         return password_verify($input,$result) ? true : false;
     }
 
 // Add Sanitization and Validation
 
-    public function SanitiseEmail($request)
+    public function sanitiseEmail($request)
     {
         return filter_var($request,FILTER_SANITIZE_EMAIL);
     }
 
-    public function ValidateEmail($request)
+    public function validateEmail($request)
     {
         return filter_var($request,FILTER_VALIDATE_EMAIL);
     }
 
-    public function HasStrongPassword($password)
+    public function hasStrongPassword($password)
     {
-// Validate password strength
-
+        
         $uppercase = preg_match('@[A-Z]@', $password);
         $lowercase = preg_match('@[a-z]@', $password);
         $number = preg_match('@[0-9]@', $password);
-//        $specialChars = preg_match('@[^\w]@', $password);
+    //    $specialChars = preg_match('@[^\w]@', $password);
 
         if (!$uppercase || !$lowercase || !$number || strlen($password) < 8) {
             return false;
@@ -72,12 +71,12 @@ abstract class Validation
         }
     }
 
-    public function SantiseUrl($request)
+    public function santiseUrl($request)
     {
         return filter_var($request,FILTER_SANITIZE_URL);
     }
 
-    public function ValidateUrl($request)
+    public function validateUrl($request)
     {
         return filter_var($request,FILTER_VALIDATE_URL);
     }
@@ -93,7 +92,7 @@ abstract class Validation
 
 
     // Valdate Data and forms.
-    public static function SafeHtml($name)
+    public static function safeHtml($name)
     {
         $data = stripslashes($name);
         $data = htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
