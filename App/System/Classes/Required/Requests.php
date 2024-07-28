@@ -53,7 +53,7 @@ class Requests extends Validation
         {
             if($params->password == true)
             {
-                if($this->hasStrongPassword($name,"uppercase|lowercase|number") == false)
+                if($this->hasStrongPassword($name,"uppercase|lowercase|number|specials|minleng|maxlength") == false)
                 {
                     $this->continue = false;
                     $this->errors[] = "Passowrd Input Does not Follow Requirments";
