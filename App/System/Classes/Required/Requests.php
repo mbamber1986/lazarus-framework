@@ -26,6 +26,7 @@ class Requests extends Validation
         {
             return false;
         }
+        return true;
     }
     /**
      * Post Request Method
@@ -52,7 +53,7 @@ class Requests extends Validation
         {
             if($params->password == true)
             {
-                if($this->hasStrongPassword($name) == false)
+                if($this->hasStrongPassword($name,"uppercase|lowercase|number") == false)
                 {
                     $this->continue = false;
                     $this->errors[] = "Passowrd Input Does not Follow Requirments";
