@@ -30,7 +30,7 @@ class Requests extends Validation
 
     public function validateParams($name, $params)
     {
-        $params = $this->ExplodeParams($params);
+        $params = $this->explodeParams($params);
 
         if (isset($params->required)) {
             if ($params->required == true) {
@@ -41,7 +41,17 @@ class Requests extends Validation
             }
         }
 
-        if(isset($params->StrongPas))
+        if(isset($params->password))
+        {
+            if($params->password == true)
+            {
+                if($this->hasStrongPassword($name) == false)
+                {
+                    $this->continue = false;
+                    $this->errors[] = "Passowrd Input Does not Follow Requirments";
+                }
+            }
+        }
         // Continue
 
         if (isset($params->email)) {
@@ -96,12 +106,12 @@ class Requests extends Validation
 
 
 
-    public function GetMethod()
+    public function getMethod()
     {
         return $_SERVER['REQUEST_METHOD'];
     }
 
-    private function ExplodeParams($params)
+    private function explodeParams($params)
     {
         $explode = explode("|", $params);
 
