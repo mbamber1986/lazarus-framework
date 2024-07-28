@@ -5,6 +5,7 @@ namespace App\System\Classes\Required;
 abstract class Validation
 {
     public static $token;
+    private $pwCheck;
     public $errors = [];
     public $passwordValidate = [];
 
