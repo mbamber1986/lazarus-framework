@@ -20,6 +20,13 @@ class Requests extends Validation
         $this->continue = true;
     }
 
+    public function hasErrors()
+    {
+        if(count($this->errors) > 0)
+        {
+            return false;
+        }
+    }
     /**
      * Post Request Method
      *
@@ -56,7 +63,7 @@ class Requests extends Validation
 
         if (isset($params->email)) {
             if ($params->email == true) {
-                if (!$this->ValidateEmail($name)) {
+                if (!$this->validateEmail($name)) {
                     $this->continue = false;
                     $this->errors[] = "Valid Email Required for " . $this->name;
                 }
