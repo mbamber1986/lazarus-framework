@@ -4,34 +4,10 @@ namespace App\System\Classes\Validation;
 
 abstract class Validation
 {
-    public static $token;
     private $pwCheck;
     public $errors = [];
     public $passwordValidate = [];
 
-
-    public function __construct()
-    {
-        // Generate a New Token
-        self::$token = bin2hex(random_bytes(32));
-    }
-
-    public static function getToken()
-    {
-        return self::$token;
-    }
-
-    public static function verifyToken($session, $token)
-    {
-        return (hash_equals($session, $token)) ? true : false;
-    }
-
-
-
-    public static function tokenInput()
-    {
-        echo '<input hidden" name="csrf_token" value="' . self::GetToken() . '">';
-    }
 
     // Manually Checks two factor Authentication
     // Will eventually Add support with linking multiple devices as well as email option
