@@ -1,9 +1,7 @@
 <?php
 
 namespace App\System\Classes\Requests;
-
-use App\System\Classes\Security\Security;
-use Random\Engine\Secure;
+use App\System\Classes\Validation\Validation;
 
 class Requests extends Validation
 {
@@ -14,9 +12,6 @@ class Requests extends Validation
     private $get;
     private $any;
 
-    // open COnnection for security
-    private $security;
-
     private $continue;
 
 
@@ -24,7 +19,6 @@ class Requests extends Validation
     public function  __construct()
     {
         $this->continue = true;
-        $this-security = new Security();
     }
 
     public function hasErrors()
@@ -60,7 +54,7 @@ class Requests extends Validation
         {
             if($params->password == true)
             {
-                if($this->security->hasStrongPassword($name,"uppercase|lowercase|number|specials|min") == false)
+                if($this->hasStrongPassword($name,"uppercase|lowercase|number|specials|min") == false)
                 {
                     $this->continue = false;
                     $this->errors[] = "Passowrd Input Does not Follow Requirments";
