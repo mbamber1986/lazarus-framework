@@ -1,6 +1,7 @@
 <?php
 
 namespace App\System\Classes\Requests;
+use App\System\Classes\Validation\Validation; 
 
 class Requests extends Validation
 {
