@@ -14,7 +14,6 @@ class Security
     {
         // Generate a New Token
         $this->token = bin2hex(random_bytes(32));
-        $this->request = new Requests();
     }
 
     public function getToken()
