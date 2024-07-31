@@ -21,14 +21,7 @@ class Requests extends Validation
         $this->continue = true;
     }
 
-    public function hasErrors()
-    {
-        if(count($this->errors) > 0)
-        {
-            return false;
-        }
-        return true;
-    }
+ 
     /**
      * Post Request Method
      *
