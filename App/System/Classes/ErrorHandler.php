@@ -34,7 +34,7 @@ class ErrorHandler extends CustomErrorHandler
         return is_null($key) ? self::$error[] = $value : self::$error[$key] = $value;
     }
 
-    public static function showError($name)
+    public static function showError($name=null)
     {
         return is_null($name) ? self::$error : self::$error[$name];
     }
