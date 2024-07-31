@@ -23,14 +23,7 @@ class Requests extends Validation
         $this->continue = true;
     }
 
-    public function hasErrors()
-    {
-        if(count($this->errors) > 0)
-        {
-            return false;
-        }
-        return true;
-    }
+ 
     /**
      * Post Request Method
      *
@@ -47,7 +40,7 @@ class Requests extends Validation
             if ($params->required == true) {
                 if (empty($name)) {
                     $this->continue = false;
-                    $this->errors[] = "Required Field: " . $this->name;
+                    ErrorHandler::$error[] = "Required Field: " . $this->name;
                 }
             }
         }
@@ -56,10 +49,10 @@ class Requests extends Validation
         {
             if($params->password == true)
             {
-                if($this->hasStrongPassword($name,"uppercase|lowercase|number|specials|minleng|maxlength") == false)
+                if($this->hasStrongPassword($name,"uppercase|lowercase|number|specials|min") == false)
                 {
                     $this->continue = false;
-                    $this->errors[] = "Passowrd Input Does not Follow Requirments";
+                     ErrorHandler::$error[] = "Passowrd Input Does not Follow Requirments";
                 }
             }
         }
@@ -69,7 +62,7 @@ class Requests extends Validation
             if ($params->email == true) {
                 if (!$this->validateEmail($name)) {
                     $this->continue = false;
-                    $this->errors[] = "Valid Email Required for " . $this->name;
+                    ErrorHandler::$error[] = "Valid Email Required for " . $this->name;
                 }
             }
         }
@@ -110,13 +103,6 @@ class Requests extends Validation
             echo "failed";
         }
     }
-
-
-
-
-
-
-
     public function getMethod()
     {
         return $_SERVER['REQUEST_METHOD'];
@@ -154,4 +140,3 @@ class Requests extends Validation
         }
     }
 }
-
