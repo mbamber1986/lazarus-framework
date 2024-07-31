@@ -7,15 +7,10 @@ use Error;
 class ErrorHandler extends CustomErrorHandler
 {
 
-    private static $error;
+    public static $error = [];
     private static $messages;
 
     private static $instance;
-
-    private function __construct()
-    {
-        self::$error = [];
-    }
 
     // Create a Singleton class instance
     public static function Boot()
@@ -28,24 +23,11 @@ class ErrorHandler extends CustomErrorHandler
 
     return static::$instance;
     }
-
-    public static function newError($value,$key=null)
-    {
-        return is_null($key) ? self::$error[] = $value : self::$error[$key] = $value;
-    }
-
-    public static function showError($name=null)
-    {
-        return is_null($name) ? self::$error : self::$error[$name];
-    }
+ 
 
     public static function hasErrors()
     {
-      if(count(self::$error) > 0)
-      {
-        return true;
-      }
-      return false;
+        return count(self::$error) > 0 ? true : false;
     }
 
     public static function DisplayError($file,$linevalue)
