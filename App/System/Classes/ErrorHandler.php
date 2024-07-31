@@ -29,9 +29,9 @@ class ErrorHandler extends CustomErrorHandler
     return static::$instance;
     }
 
-    public static function newError($key,$value)
+    public static function newError($value,$key)
     {
-        return self::$error[$key] = $value;
+        return is_null($key) ? self::$error[] = $value : self::$error[$key] = value;
     }
 
     public static function showError($name)
