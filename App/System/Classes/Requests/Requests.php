@@ -1,6 +1,8 @@
 <?php
 
 namespace App\System\Classes\Requests;
+
+use App\System\Classes\ErrorHandler;
 use App\System\Classes\Validation\Validation; 
 
 class Requests extends Validation
@@ -38,7 +40,7 @@ class Requests extends Validation
             if ($params->required == true) {
                 if (empty($name)) {
                     $this->continue = false;
-                    $this->errors[] = "Required Field: " . $this->name;
+                    ErrorHandler::newError("Required Field: " . $this->name);
                 }
             }
         }
@@ -50,7 +52,7 @@ class Requests extends Validation
                 if($this->hasStrongPassword($name,"uppercase|lowercase|number|specials|min") == false)
                 {
                     $this->continue = false;
-                    $this->errors[] = "Passowrd Input Does not Follow Requirments";
+                     ErrorHandler::newError("Passowrd Input Does not Follow Requirments");
                 }
             }
         }
@@ -60,7 +62,7 @@ class Requests extends Validation
             if ($params->email == true) {
                 if (!$this->validateEmail($name)) {
                     $this->continue = false;
-                    $this->errors[] = "Valid Email Required for " . $this->name;
+                    ErrorHandler::newError("Valid Email Required for " . $this->name);
                 }
             }
         }
