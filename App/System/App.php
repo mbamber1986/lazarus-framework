@@ -3,9 +3,9 @@ namespace App\System;
 
 use App\System\Classes\Required\Validation;
 use LazarusPhp\SessionManager\Sessions;
-use App\System\Classes\Required\CustomErrorHandler;
+use App\System\Classes\ErrorHandler;
+use App\System\Classes\Security\Security;
 use LazarusPhp\DatabaseManager\CredentialsManager;
-use Generator;
 
 class App
 {
@@ -55,7 +55,7 @@ class App
 
     public function boot($name=null)
     {
-        CustomErrorHandler::Boot();
+        ErrorHandler::Boot();
         $session = new Sessions();
         if(session_status() == PHP_SESSION_NONE)
         {
