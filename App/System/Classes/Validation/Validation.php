@@ -54,7 +54,7 @@ abstract class Validation
                 if ($validPw->uppercase == true) {
                     if (!$uppercase) {
                         $this->pwCheck = false;
-                        ErrorHandler::newError[] = "Password Must contain at least one Uppercase Letter";
+                        ErrorHandler::newError("Password Must contain at least one Uppercase Letter");
                     }
                 }
             }
@@ -65,7 +65,7 @@ abstract class Validation
                 {
                     if (!$lowercase) {
                         $this->pwCheck = false;
-                        ErrorHandler::newError[] = "Password Must have at least one lowercase letter";
+                        ErrorHandler::newError("Password Must have at least one lowercase letter");
                     }
                 }
             }
@@ -76,7 +76,7 @@ abstract class Validation
                 {
                     if (!$number) {
                         $this->pwCheck = false;
-                        ErrorHandler::newError[] = "Password must contain at least one number";
+                        ErrorHandler::newError("Password must contain at least one number");
                     }
                 }
             }
@@ -87,7 +87,7 @@ abstract class Validation
                 {
                     if ($length < 8) {
                         $this->pwCheck = false;
-                        ErrorHandler::newError[] = "Password Must be a minimum of 8 Characters";
+                        ErrorHandler::newError("Password Must be a minimum of 8 Characters");
                     }
                 }
             }
@@ -98,7 +98,7 @@ abstract class Validation
                 {
                     if ($length > 20) {
                         $this->pwCheck = false;
-                        ErrorHandler::newError[] = "Password cannit exceed 20 characters";
+                        ErrorHandler::newError("Password cannit exceed 20 characters");
                     }
                 }
             }
@@ -109,7 +109,7 @@ abstract class Validation
                 {
                     if (!$specialChars) {
                         $this->pwCheck = false;
-                        ErrorHandler::newError[] = "Password Must contain at least one Special Character";
+                        ErrorHandler::newError("Password Must contain at least one Special Character");
                     }
                 }
             }
