@@ -29,25 +29,29 @@ class ErrorHandler extends CustomErrorHandler
     return static::$instance;
     }
 
-    public static function newError($value,$key)
+    public static function newError($value,$key=null)
     {
-        return is_null($key) ? self::$error[] = $value : self::$error[$key] = value;
+        return is_null($key) ? self::$error[] = $value : self::$error[$key] = $value;
     }
 
-    public static function showError($name)
+    public static function showError($name=null)
     {
-        return self::$error[$name];
+        return is_null($name) ? self::$error : self::$error[$name];
     }
 
     public static function hasErrors()
     {
-        return count(self::$error) > 0) ? true : false;
+      if(count(self::$error) > 0)
+      {
+        return true;
+      }
+      return false;
     }
 
     public static function DisplayError($file,$linevalue)
     {
         $file = file_get_contents($file);
-        $file = Validation::SafeHtml($file);
+        // $file = Validation::SafeHtml($file);
         $lines = explode("\n", $file);
         if ($file === false) {
             echo "Failed to read the file: " . $file . "\n";
