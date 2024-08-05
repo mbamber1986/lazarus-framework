@@ -1,28 +1,34 @@
 <?php
 
 namespace   App\System\Classes;
-use App\System\Classes\Required\CustomErrorHandler;
-
+use App\System\Classes\ErrorHandler;
 use App\System\App;
-
-
 class Views
 {
 
+    private $data = [];
     private $views;
     private $cache;
-    private $data = [];
-    private $requirements;
-
 
     public function __construct()
     {
+    
         $app = new App();
-        $this->views = $app->GenerateRoot() . "/Views/";
-        $this->cache = $app->GenerateRoot() . "/cache/";
+        $this->views = $app->GenerateRoot() . "/Views";
+        $this->cache = $app->GenerateRoot() . "/cache";
         // Create the folders
         
     }
+
+    public function __call($name, $arguments) {
+        // Check if there is at least one argument
+        if (count($arguments) > 0) {
+            // Store the first argument with the name as the key
+            $this->data[$name] = $arguments[0];
+        }
+        return $this;
+    }
+
 
     public function __set($name, $value)
     {
@@ -46,26 +52,44 @@ class Views
     {
         unset($this->data[$name]);
     }
+
+
+
+
+    private function ViewExists($file)
+    {
+        return file_exists($file) ? true : false;
+    }
+
     public function render($file, array $data = [])
     {
-
-        if(is_file($this->views.$file))
+        echo count($this->data);
+        $path = $this->views . $file;
+        // Check if $data is not empty
+        if(count($data) > 0)
         {
-if (file_exists($this->views.$file)) {
-            if (is_array($data)) {
-                extract($data);
-            }
-            ob_start();
-            $include = include_once($this->views . $file);
-            $template = ob_get_contents();
-            ob_end_flush();
+            // Change $this->data to a non Variable;
+            $this->data = $data;
         }
+
+        if(is_array($this->data))
+        {
+            extract($this->data);
+        }
+    
+
+        if($this->ViewExists($path) == true){
+        ob_start();
+        ob_get_contents();
+        require_once($path);
+        ob_end_flush();
+        }        
         else
         {
-            trigger_error(E_USER_WARNING,"File Not Found");
+            trigger_error("The File $path cannot be found:");
         }
-        }
-        
+
+        return $this;
     }
 
 
