@@ -8,6 +8,7 @@ class Views
 
     private $data = [];
     private $views;
+    private $templates;
     private $cache;
 
     public function __construct()
@@ -15,10 +16,31 @@ class Views
     
         $app = new App();
         $this->views = $app->GenerateRoot() . "/Views";
-        $this->cache = $app->GenerateRoot() . "/cache";
+        $this->templates = $app->GenerateRoot()."/Templates";
+        $this->cache = $app->GenerateRoot() . "/Cache";
         // Create the folders
+
+        if(!is_dir($this->views))
+        {
+            trigger_error("Folder :" . $this->views ." Does not exist");
+        }
+
+        if(!is_dir($this->cache))
+        {
+            trigger_error("Folder :" . $this->cache ." Does not exist");
+        }
+
+        if(!is_dir($this->templates))
+        {
+            trigger_error("Folder :" . $this->templates ." Does not exist");
+        }
+
+        
+
         
     }
+
+
 
     public function __call($name, $arguments) {
         // Check if there is at least one argument
