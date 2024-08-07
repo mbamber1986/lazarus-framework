@@ -8,6 +8,7 @@ use App\System\Classes\Validation\Validation;
 class Requests extends Validation
 {
 
+    private $data = []
     private $params = [];
     private $post;
     private $name;
@@ -31,6 +32,25 @@ class Requests extends Validation
      * @return void
      */
 
+    public function __set($name, $value)
+    {
+        $this->data[$name] = $value;
+        return $this;
+    }
+
+    public function __get($name)
+    {
+        return $this->data[$name];
+    }
+
+    public function __isset($name)
+    {
+        return isset($this->data[$name]);
+    }
+
+    public function unset($name) {
+        unset($this->data[$name]);
+    }
 
     public function validateParams($name, $params)
     {
