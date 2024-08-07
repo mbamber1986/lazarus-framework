@@ -1,8 +1,10 @@
 <?php
 
-namespace   App\System\Classes;
+namespace  App\System\Classes;
+
 use App\System\Classes\ErrorHandler;
 use App\System\App;
+
 class Views
 {
 
@@ -13,58 +15,35 @@ class Views
 
     public function __construct()
     {
-    
+
         $app = new App();
         $this->views = $app->GenerateRoot() . "/Views";
-        $this->templates = $app->GenerateRoot()."/Templates";
         $this->cache = $app->GenerateRoot() . "/Cache";
         // Create the folders
 
-        if(!is_dir($this->views))
-        {
-            trigger_error("Folder :" . $this->views ." Does not exist");
-        }
-
-        if(!is_dir($this->cache))
-        {
-            trigger_error("Folder :" . $this->cache ." Does not exist");
-        }
-
-        if(!is_dir($this->templates))
-        {
-            trigger_error("Folder :" . $this->templates ." Does not exist");
-        }
-
-        
-
-        
+        $this->DetectFolder($this->views);
+        $this->DetectFolder($this->cache);
+        $this->DetectFolder($this->templates);
     }
 
-
-
-    public function __call($name, $arguments) {
-        // Check if there is at least one argument
-        if (count($arguments) > 0) {
-            // Store the first argument with the name as the key
-            $this->data[$name] = $arguments[0];
+    private function DetectFolder($file)
+    {
+        if (!is_dir($file)) {
+            return trigger_error("Folder :" . $file . " Does not exist");
         }
-        return $this;
     }
-
-
     public function __set($name, $value)
     {
-        return $this->data[$name]=$value;
+        return $this->data[$name] = $value;
     }
 
     public function __get($name)
     {
-        if(array_key_exists($name,$this->data))
-        {
+        if (array_key_exists($name, $this->data)) {
             return $this->data[$name];
         }
     }
-    
+
     public function __isset($name)
     {
         return isset($this->data[$name]);
@@ -76,38 +55,30 @@ class Views
     }
 
 
-
-
     private function ViewExists($file)
     {
         return file_exists($file) ? true : false;
     }
 
+
     public function render($file, array $data = [])
     {
-        echo count($this->data);
         $path = $this->views . $file;
-        // Check if $data is not empty
-        if(count($data) > 0)
-        {
-            // Change $this->data to a non Variable;
-            $this->data = $data;
-        }
-
-        if(is_array($this->data))
-        {
-            extract($this->data);
-        }
-    
-
-        if($this->ViewExists($path) == true){
-        ob_start();
-        ob_get_contents();
-        require_once($path);
-        ob_end_flush();
-        }        
-        else
-        {
+        if ($this->ViewExists($path) == true) {
+            // Check if $data is not empty
+            if (count($data) > 0) {
+                $this->data = $data;
+            }
+            // Check if the $data Variable is an empty array while Counting Arrays
+            if (is_array($this->data)) {
+                extract($this->data);
+            }
+            // Output the data to the Next Page 
+            ob_start();
+            require_once($path);
+            return ob_get_clean();
+        } else {
+            // PassError if file Not Found.
             trigger_error("The File $path cannot be found:");
         }
 
@@ -115,8 +86,4 @@ class Views
     }
 
 
-    private function ValidFolder($property)
-    {
-        return is_dir($property) ? true : false;
-    }
 }
