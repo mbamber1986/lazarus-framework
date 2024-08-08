@@ -8,7 +8,7 @@ use App\System\Classes\Validation\Validation;
 class Requests extends Validation
 {
 
-    private $data = []
+    private $data = [];
     private $params = [];
     private $post;
     private $name;
@@ -34,8 +34,7 @@ class Requests extends Validation
 
     public function __set($name, $value)
     {
-        $this->data[$name] = $value;
-        return $this;
+        return $this->data[$name] = $value;
     }
 
     public function __get($name)
@@ -52,9 +51,11 @@ class Requests extends Validation
         unset($this->data[$name]);
     }
 
-    final public function save()
+    final public function save($object=true)
     {
-        return $this->data;
+        // Export as Object 
+        
+        return $object == true ? (object) $this->data : $this->data;
     }
 
     public function validateParams($name, $params)
