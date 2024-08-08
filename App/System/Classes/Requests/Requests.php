@@ -52,6 +52,11 @@ class Requests extends Validation
         unset($this->data[$name]);
     }
 
+    final public function save()
+    {
+        return $this->data;
+    }
+
     public function validateParams($name, $params)
     {
         $params = $this->explodeParams($params);
