@@ -23,7 +23,6 @@ class Views
 
         $this->DetectFolder($this->views);
         $this->DetectFolder($this->cache);
-        $this->DetectFolder($this->templates);
     }
 
     private function DetectFolder($file)
